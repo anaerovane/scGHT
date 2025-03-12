@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import networkx as nx
 
-def process_clustering_part(graphml_path, csv_path, leiden_col, target_cluster, start_node, threshold, new_col_name, output_path):
+def process_clustering_part(graphml_path, csv_path, leiden_col, target_cluster, start_node, threshold, new_col_name, output_path,task=1):
     T = nx.read_graphml(graphml_path)
     clustering_df = pd.read_csv(csv_path, index_col=0)
     print("previous:")
@@ -26,6 +26,10 @@ def process_clustering_part(graphml_path, csv_path, leiden_col, target_cluster, 
     print(f"25%: {percentile_25}")
     print(f"33%: {percentile_33}")
     print(f"50%: {percentile_50}")
+
+    if task==2:
+        threshold=np.percentile(edge_weights,threshold)
+    print(threshold)
 
     def minimum_edge_weight_in_shortest_path(T, u, v):
         path = nx.shortest_path(T, u, v, weight="weight")
