@@ -9,10 +9,11 @@ def process_clustering_network_part(csv_path, leiden_col, target_cluster, output
     print(clustering_df.head())
     G = nx.Graph()
     if leiden_col in clustering_df.columns:
-        cells_in_cluster = clustering_df[clustering_df[leiden_col] == target_cluster].index.tolist()
+        cells_in_cluster2 = clustering_df[clustering_df[leiden_col] == target_cluster].index.tolist()
         new_node = 0  
+        #print(cells_in_cluster)
         print(f"New node for {leiden_col} cluster {target_cluster}: {new_node}")
-        for cell in cells_in_cluster:
+        for cell in cells_in_cluster2:
             if cell in G:
                 neighbors = list(G.neighbors(cell))
                 for neighbor in neighbors:
@@ -28,21 +29,22 @@ def process_clustering_network_part(csv_path, leiden_col, target_cluster, output
                 unique_clusters = unique_clusters[unique_clusters != target_cluster] 
             else:
                 unique_clusters = clustering_df[col].unique()
-            
+            #print(unique_clusters)
             for cluster in tqdm(unique_clusters):
                 cells_in_cluster = clustering_df[clustering_df[col] == cluster].index.tolist()
                 for i in range(len(cells_in_cluster)):
                     for j in range(i + 1, len(cells_in_cluster)):
                         cell1, cell2 = cells_in_cluster[i], cells_in_cluster[j]
-                        if cell1 in cells_in_cluster:
+                        if cell1 in cells_in_cluster2:
                             cell1 = new_node
-                        if cell2 in cells_in_cluster:
+                        if cell2 in cells_in_cluster2:
                             cell2 = new_node
                         if G.has_edge(cell1, cell2):
                             G[cell1][cell2]['weight'] += 1
                         else:
                             G.add_edge(cell1, cell2, weight=1)
-
+                        #print(cell1,cell2,G[cell1][cell2])
+    #print(G[0][56489], G[0][23721], G[0][28544])
     nx.write_graphml(G, output_gtree_path)
     print(f"G save to '{output_gtree_path}'")
 

@@ -1,6 +1,6 @@
 # scGHT
 
-We connect identical classifications across different clusters to form a graph and then generate a minimum cut tree on this graph. Subsequently, we perform joint learning of clustering on the minimum cut tree, optimizing the boundaries of the clusters. This optimization process includes global boundary contraction optimization (the “all” part) and single-category boundary extension optimization (the “part” part).
+We connect identical classifications across different clusters to form a graph and then generate a Gomory-Hu tree on this graph. Subsequently, we perform joint learning of clustering on the minimum cut tree, optimizing the boundaries of the clusters. This optimization process includes global boundary contraction optimization (the “all” part) and single-category boundary extension optimization (the “part” part).
 
 
 
