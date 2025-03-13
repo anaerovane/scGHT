@@ -1,5 +1,8 @@
 # scGHT
 
+We connect identical classifications across different clusters to form a graph and then generate a minimum cut tree on this graph. Subsequently, we perform joint learning of clustering on the minimum cut tree, optimizing the boundaries of the clusters. This optimization process includes global boundary contraction optimization (the “all” part) and single-category boundary extension optimization (the “part” part).
+
+
 
 ## Contact
 
@@ -19,57 +22,98 @@ pip install -r requirements.txt
 
 
 
-## Usage
+## Usage_ALL
 
-#### Recommend
-
-```
-cd LRSAA
-python main.py --yaml poisson.yaml
-```
-
-#### Test
-
-##### Cut-only (for test)
+#### Construct Gomory-Hu tree (CPU)
 
 ```
-python cutonly.py --yaml poisson.yaml
+from ghtree import process_clustering_network_all
+process_clustering_network_all(
+    csv_path='clustering_results.csv',
+    output_gtree_path="Gtree0312.graphml",
+    output_ttree_path="Ttree0312.graphml"
+)
 ```
 
-##### Result-only (for test)
+#### Construct Gomory-Hu tree (GPU)
 
 ```
-python resultonly.py --yaml poisson.yaml
+from GPUghtree import process_clustering_network_all
+GPUprocess_clustering_network_all(
+    csv_path='clustering_results.csv',
+    output_gtree_path="Gtree0312.graphml",
+    output_ttree_path="Ttree0312.graphml"
+)
 ```
-
-#### YAML
-
-poisson.yaml file need to be created as follows
-
-```yaml
-image_path: 'E:/mbnet/gaode/xm/18.tiff'
-output_directory: 'E:/mbnet/gaode/xm/18_image'
-output_label_directory: 'E:/mbnet/gaode/xm/18_label'
-output_labelnew_path: 'E:/mbnet/gaode/xm/18_labelnew'  #dir or file ending with .txt are both ok
-jpg_directory: 'E:/mbnet/gaode/xm/18_jpg'
-output_image_path: 'E:/mbnet/gaode/xm/18new.tiff'
-output_jsonl_path: 'E:/mbnet/gaode/xm/18new.jsonl'
-sample_radius: 500
-threshold: 0.6
-cropwidth: 640
-cropheight: 640
+#### Process Gomory-Hu tree 
 
 ```
+process_clustering(
+"Ttree0312.graphml", 
+"clustering_results0313.csv", 
+"leiden",
+1700, 
+1900,
+task=1)
+```
 
-We conducted the tests on both Windows CPU systems and Ubuntu 22.04LTS GPU systems (with an Nvidia Tesla M40 GPU VRAM12G)
+You can find the process example on **example_all.ipynb**
+
+
+
+## Usage_PART
+
+#### Construct Gomory-Hu tree (CPU)
+
+```
+from ghtree import process_clustering_network_part, process_clustering_network_all
+process_clustering_network_part(
+    csv_path='clustering_results0313.csv',
+    leiden_col='leiden',
+    target_cluster=2,
+    output_ttree_path="Ttree0313T.graphml",
+    output_gtree_path="Gtree0313G.graphml"
+)
+```
+
+#### Construct Gomory-Hu tree (GPU)
+
+```
+from GPUghtree import process_clustering_network_part, process_clustering_network_all
+GPUprocess_clustering_network_part(
+    csv_path='clustering_results0313.csv',
+    leiden_col='leiden',
+    target_cluster=2,
+    output_ttree_path="Ttree0313T.graphml",
+    output_gtree_path="Gtree0313G.graphml"
+)
+```
+#### Process Gomory-Hu tree 
+
+```
+process_clustering_part(
+    graphml_path="Ttree0313.graphml",
+    csv_path='clustering_results.csv',
+    leiden_col='leiden',
+    target_cluster=2,
+    start_node="0",
+    threshold=1800,
+    new_col_name='leiden_new',
+    output_path='updated_clustering_results.csv'
+)
+```
+
+You can find the process example on **example_part.ipynb**
 
 
 
 ## Result Shown
 
-![6](./6.jpg)
+
 
 ## Note
+
+We conducted the tests on both Windows CPU systems and Ubuntu 22.04LTS GPU systems (with an Nvidia Tesla M40 GPU VRAM12G)
 
 We are still making significant modifications and optimizations to the project
 
