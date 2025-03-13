@@ -12,7 +12,7 @@ Email: 2210454@mail.nankai.edu.cn (Wuzheng Dong) , 2210455@mail.nankai.edu.cn (Y
 
 ## Installation
 
-```
+```bash
 git clone https://github.com/anaerovane/scGHT.git
 cd scGHT
 conda create -n scGHT python==3.12
@@ -26,7 +26,7 @@ pip install -r requirements.txt
 
 #### Construct Gomory-Hu tree (CPU)
 
-```
+```python
 from ghtree import process_clustering_network_all
 process_clustering_network_all(
     csv_path='clustering_results.csv',
@@ -37,7 +37,7 @@ process_clustering_network_all(
 
 #### Construct Gomory-Hu tree (GPU)
 
-```
+```python
 from GPUghtree import process_clustering_network_all
 GPUprocess_clustering_network_all(
     csv_path='clustering_results.csv',
@@ -47,13 +47,14 @@ GPUprocess_clustering_network_all(
 ```
 #### Process Gomory-Hu tree 
 
-```
-process_clustering(
-"Ttree0312.graphml", 
-"clustering_results0313.csv", 
-"leiden",
-1700, 
-1900,
+```python
+from processpart import process_clustering_all
+process_clustering_all(
+T_file="Ttree0312.graphml", 
+clustering_file="clustering_results0313.csv", 
+initial_clustering_method="leiden",
+threshold1=1700, 
+threshold2=1900,
 task=1)
 ```
 
@@ -65,7 +66,7 @@ You can find the process example on **example_all.ipynb**
 
 #### Construct Gomory-Hu tree (CPU)
 
-```
+```python
 from ghtree import process_clustering_network_part, process_clustering_network_all
 process_clustering_network_part(
     csv_path='clustering_results0313.csv',
@@ -78,7 +79,7 @@ process_clustering_network_part(
 
 #### Construct Gomory-Hu tree (GPU)
 
-```
+```python
 from GPUghtree import process_clustering_network_part, process_clustering_network_all
 GPUprocess_clustering_network_part(
     csv_path='clustering_results0313.csv',
@@ -90,7 +91,8 @@ GPUprocess_clustering_network_part(
 ```
 #### Process Gomory-Hu tree 
 
-```
+```python
+from processpart import process_clustering_part
 process_clustering_part(
     graphml_path="Ttree0313.graphml",
     csv_path='clustering_results.csv',
