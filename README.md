@@ -6,7 +6,7 @@ We connect identical classifications across different clusters to form a graph a
 
 ## Contact
 
-Email: 2210454@mail.nankai.edu.cn (Wuzheng Dong) , 2210455@mail.nankai.edu.cn (Yujuan Zhu)
+Email: 2210454@mail.nankai.edu.cn (Wuzheng Dong) , Yifan Luo , Weiyi Chen
 
 
 
